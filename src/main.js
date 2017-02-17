@@ -1,4 +1,4 @@
-﻿﻿/* Intro to BabylonJS (version 0.1.0)
+﻿/* Intro to BabylonJS (version 0.1.0)
  *
  * main.js: Rendering function.
  */
@@ -11,6 +11,7 @@ window.onload = function(){
     var divFps = document.getElementById("fps");
     var divProp = document.getElementById("objPropTitle");
     var ballStick = document.getElementById("ballstick");
+    var moleculeList = document.getElementById("moleculelist")
     // Check support
     if (!BABYLON.Engine.isSupported()) {
         window.alert('Browser not supported');
@@ -85,6 +86,29 @@ window.onload = function(){
                   }
               }
     });
+    moleculeList.addEventListener("change", function () {
+        if (scene) {
+            var molecule = scene.getMeshByName("Molecule");
+            if(molecule){
+                molecule.dispose();
+            }
+            molecule = new Molecule(moleculeList.value,moleculeList.value,new BABYLON.Vector3(0,0,0),scene);
+            scene.registerBeforeRender(function () {
+
+                 var light = scene.getLightByName("Omni");
+                 var camera = scene.activeCamera.position;
+            // lIGHT from camera anytime !
+               
+                light.position = camera;
+
+            //animate the mesh
+            molecule.rotation.x += 0.01;
+            molecule.rotation.z += 0.02;
+        });
+            
+        }
+    });
+    
 
        var hideCameraPanel = function () {
         cameraPanelIsClosed = true;
